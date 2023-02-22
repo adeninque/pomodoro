@@ -1,0 +1,11 @@
+@import './vairables';
+
+.alert {
+  width: 100%;
+  background-color: $skye-clr;
+  padding: .3rem 0;
+  position: fixed;
+  &__msg {
+    text-align: center;
+  }
+}

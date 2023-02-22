@@ -1,0 +1,135 @@
+@import "../../styles/vairables";
+
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__body {
+    flex: 1 1 auto;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 2rem 0;
+  }
+
+  &__home {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    margin: 0 0 1rem 0 ;
+    text-transform: uppercase;
+    color: $second-clr;
+    img {
+      width: .8rem;
+      height: .8rem;
+      margin: 0 .2rem 0 0;
+      transition: .3s ease-in-out;
+    }
+
+    &:hover{
+      img {
+        margin: 0 .5rem 0 0;
+      }
+    }
+  }
+}
+
+.form {
+  &__input {
+    
+  }
+  
+  &__field {
+    margin: 0 0 .5rem 0;  
+
+    &:nth-child(4) {
+      margin: 0;
+    }
+  }
+
+  &__subtitle {
+    margin: 0 0 .2rem 0;
+    font-weight: 500;
+  }
+
+  &__submit {
+    width: 100%;
+    padding: .3rem;
+    font-size: 1.5rem;
+    border-radius: .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background-color: $fourth-clr;
+    color: $fitfth-clr;
+    transition: .3s ease-in-out;
+    margin: 1rem 0 0 0;
+    
+    &:hover {
+      box-shadow: $shadow;
+    }
+  }
+}
+
+.field {
+  color: $fitfth-clr;
+  display: grid;
+  grid-template-columns: 8fr 2fr 2fr;
+  grid-gap: .5rem;
+    * {
+      border-radius: .5rem;
+    }
+
+    &__btn {
+      background-color: #DAB58E;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      font-size: 2rem;
+      transition: .3s ease-in-out;
+
+      &::after {
+        content: '';
+        display: block;
+        padding: 50% 0;
+      }
+
+      div {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+      }
+
+      &:hover {
+        box-shadow: $shadow;
+      }
+    }
+
+    &__input {
+      color: $fitfth-clr;
+      font-size: 3rem;
+      width: 100%;
+      text-align: center;
+      background-color: $main-clr;
+      border: .1rem solid $second-clr;
+      font-weight: 700;
+
+      &::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+      }
+    }
+}
+
+.li {
+  color: aquamarine;
+
+  &:last-child {
+    color: black;
+  }
+}
