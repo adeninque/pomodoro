@@ -74,8 +74,13 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 		font-size: 14px;
 	}
 }
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 400px) {
 	html, body {
 		font-size: 12px;
+	}
+}
+@media screen and (max-width: 351px) {
+	html, body {
+		font-size: 10px;
 	}
 }
