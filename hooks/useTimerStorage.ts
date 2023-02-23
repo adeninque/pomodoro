@@ -5,17 +5,6 @@ import { useEffect, useState } from "react"
 import {redirect} from 'next/navigation'
 
 const useTimeStorage = () => {
-
-  const [data, setData] = useState<ISotrage>({
-    defaults: {productive: 0, rest:0},
-    current: {productive: 0, rest: 0},
-    total: {productive: 0, rest:0}
-  })
-
-  useEffect(() => {
-    setData(getStorage())
-  }, [])
-
   const initStorage = (timer: ITimer) => {
     const storage: ISotrage = {
       defaults: {productive: timer.productive * 60, rest: timer.rest * 60},
@@ -56,12 +45,9 @@ const useTimeStorage = () => {
 
   function setStorage(storage: ISotrage) {
     localStorage.setItem('timerStorage', JSON.stringify(storage))
-    console.log('data changed to ', storage.current.productive)
-    setData(getStorage())
   }
 
   return {
-    data,
     initStorage,
     setCurrent,
     addTotal,

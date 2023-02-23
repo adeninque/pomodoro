@@ -1,107 +1,71 @@
 "use client";
 
 import { ITimer } from "@/interfaces/ISotrage";
-import { IStage } from "@/interfaces/IStage";
+import StatusType from "@/types/StatusType";
 import { useEffect, useRef, useState } from "react";
 import useNotification from "./useNotification";
 import useTimeStorage from "./useTimerStorage";
 
+const DEFAULT_TIME = 0
+
 const useTimer = () => {
-  const { handleStage } = useNotification();
-  const { data, setCurrent, addTotal } = useTimeStorage();
-  const [paused, setPaused] = useState(true);
-  const [stage, setStage] = useState<IStage>({ current: "default" });
-  const [counter, setCounter] = useState(0);
-  const intevalRef = useRef<NodeJS.Timer | null>(null);
+  const { getStorage, setCurrent } = useTimeStorage()
+  const [counter, setCounter] = useState(DEFAULT_TIME)
+  const [status, setStatus] = useState<StatusType>(undefined)
+  const [paused, setPaused] = useState(true)
+  const intervalRef = useRef<NodeJS.Timer | null>(null)
 
   useEffect(() => {
-    determineStage(data.current);
-    // console.log(data.current.productive)
-  }, [data]);
+    determineStatus(getStorage().current)
+  }, [])
 
   useEffect(() => {
-    if (!paused && stage.current != "finished") {
-      intevalRef.current = setInterval(() => {
+    console.log(status)
+  }, [status])
+
+  useEffect(() => {
+    switch(status) {
+      case 'productive':
+        setCurrent({...getStorage().current, productive: counter})
+        break
+      case 'rest':
+        setCurrent({...getStorage().current, productive: counter})
+        break
+    }
+  }, [counter])
+
+  useEffect(() => {
+    if (!paused) {
+      intervalRef.current = setInterval(() => {
         setCounter(prev => prev - 1)
-      }, 10);
-    } else if (intevalRef.current) {
-      clearInterval(intevalRef.current);
+      }, 1000)
     }
-  }, [paused]);
+  }, [paused])
 
-  useEffect(() => {
-    switch (stage.current) {
-      case "finished":
-        setCounter(0);
-        // console.log("counter setted as 0");
-        break;
-      case "productive":
-        setCounter(data.current.productive);
-        // console.log("counter setted as productive");
-        break;
-      case "rest":
-        setCounter(data.current.rest);
-        // console.log("counter setted as rest");
-        break;
-    }
-  }, [stage]);
-
-  function determineStage(timer: ITimer) {
-    if (timer.productive <= 0 && timer.rest <= 0) {
-      setStage({ current: "finished" });
-      handleStage("Your rest finished");
-      pauseTimer();
+  function determineStatus(timer: ITimer) {
+    if (timer.productive <= 0 && timer.rest <=0) {
+      setStatus('finished')
+      setCounter(DEFAULT_TIME)
     } else if (timer.productive <= 0) {
-      setStage((prev) => {
-        if (prev.current != "rest") {
-          handleStage("Productive time ended");
-          pauseTimer();
-        }
-        return { current: "rest" };
-      });
+      setStatus('rest')
+      setCounter(timer.rest)
     } else {
-      setStage((prev) => {
-        if (prev.current != "productive") {
-          handleStage("Sessin setted");
-          pauseTimer();
-        }
-        return { current: "productive" };
-      });
+      setStatus('productive')
+      setCounter(timer.productive)
     }
   }
 
-  const togglePaused = () => {
-    setPaused((prev) => !prev);
-  };
-
-  function pauseTimer() {
-    if (!paused) togglePaused();
-  }
-
-  function saveCounter() {
-    switch (stage.current) {
-      case "productive":
-        setCurrent({ ...data.current, productive: counter - 1 });
-        break;
-      case "rest":
-        setCurrent({ ...data.current, rest: counter - 1 });
-        break;
-      case "finished":
-        togglePaused();
+  const togglePause = () => setPaused(prev => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
     }
-  }
-
-  const startNewSession = () => {
-    setCurrent(data.defaults);
-    // addTotal(data.defaults);
-  };
+    return !prev
+  })
 
   return {
-    stage,
     counter,
-    togglePaused,
-    startNewSession,
     paused,
+    togglePause
   };
 };
 
