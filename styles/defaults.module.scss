@@ -1,0 +1,45 @@
+@import './vairables';
+
+.defs {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: .2rem;
+  border-radius: 2rem;
+  background-color: rgba($color: $third-clr, $alpha: .6);
+  box-shadow: $shadow;
+  margin: 0 0 4rem 0;
+  transition: .3s ease-in-out;
+  font-size: 1rem;
+  &__title {
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0 .5rem;
+  }
+  &__prop {
+    text-transform: uppercase;
+    span {
+      font-weight: 700;
+      text-transform: lowercase;
+    }
+  }
+  &__conf {
+    width: 1.5rem;
+    display: block;
+    border-radius: 50%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-color: black;
+    background-size: 70% 70%;
+    transition: .3s ease-in-out;
+    &::after {
+      content: '';
+      display: block;
+      padding: 50% 0;
+    }
+    &:hover {
+      filter: invert(100);
+    }
+  }
+}

@@ -10,9 +10,11 @@ const DEFAULT_TIME = 0
 
 const useTimer = () => {
   const { getStorage, setCurrent } = useTimeStorage()
+  const { handleStage } = useNotification() 
   const [counter, setCounter] = useState(DEFAULT_TIME)
   const [status, setStatus] = useState<StatusType>(undefined)
   const [paused, setPaused] = useState(true)
+  const [fetchingCounter, setFetchingCounter] = useState(false)
   const intervalRef = useRef<NodeJS.Timer | null>(null)
 
   useEffect(() => {
@@ -20,18 +22,16 @@ const useTimer = () => {
   }, [])
 
   useEffect(() => {
-    console.log(status)
-  }, [status])
-
-  useEffect(() => {
-    switch(status) {
-      case 'productive':
-        setCurrent({...getStorage().current, productive: counter})
-        break
-      case 'rest':
-        setCurrent({...getStorage().current, productive: counter})
-        break
-    }
+    if (counter >= 0 && !fetchingCounter){
+      switch(status) {
+        case 'productive':
+          setCurrent({...getStorage().current, productive: counter})
+          break
+        case 'rest':
+          setCurrent({...getStorage().current, rest: counter})
+          break
+      }
+    } else determineStatus(getStorage().current)
   }, [counter])
 
   useEffect(() => {
@@ -43,29 +43,47 @@ const useTimer = () => {
   }, [paused])
 
   function determineStatus(timer: ITimer) {
+    setFetchingCounter(true)
+    pauseTimer()
     if (timer.productive <= 0 && timer.rest <=0) {
       setStatus('finished')
       setCounter(DEFAULT_TIME)
+      handleStage('You finished your session!')
     } else if (timer.productive <= 0) {
       setStatus('rest')
       setCounter(timer.rest)
+      handleStage('Great job! You productive time ended')
     } else {
       setStatus('productive')
       setCounter(timer.productive)
+      handleStage('Have a nice work')
     }
+    setFetchingCounter(false)
   }
 
-  const togglePause = () => setPaused(prev => {
+  function pauseTimer() {
     if (intervalRef.current) {
       clearInterval(intervalRef.current)
     }
-    return !prev
-  })
+    if (!paused) setPaused(true)
+  }
+
+  function startTimer() {
+    if (paused) setPaused(false)
+  }
+
+  function startNewSession() {
+    setCurrent(getStorage().defaults)
+    determineStatus(getStorage().current)
+  }
 
   return {
     counter,
     paused,
-    togglePause
+    status,
+    pauseTimer,
+    startTimer,
+    startNewSession
   };
 };
 

@@ -1,8 +1,6 @@
 'use client'
 
 import { ISotrage, ITimer } from "@/interfaces/ISotrage"
-import { useEffect, useState } from "react"
-import {redirect} from 'next/navigation'
 
 const useTimeStorage = () => {
   const initStorage = (timer: ITimer) => {

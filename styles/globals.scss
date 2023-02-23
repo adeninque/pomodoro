@@ -22,7 +22,7 @@ html,body{
 	width: 100%;
 	font-size: 100%;
 	line-height: 1;
-	font-size: $def-size;
+	font-size: 20px;
   font-family: 'Inter', serif;
 	-ms-text-size-adjust: 100%;
 	-moz-text-size-adjust: 100%;
@@ -61,5 +61,21 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
 	flex-direction: column;
 	& > *{
 		flex: 1 1 auto;
+	}
+}
+
+@media screen and (max-width: 714px) {
+	html, body {
+		font-size: 16px;
+	}
+}
+@media screen and (max-width: 500px) {
+	html, body {
+		font-size: 14px;
+	}
+}
+@media screen and (max-width: 380px) {
+	html, body {
+		font-size: 12px;
 	}
 }

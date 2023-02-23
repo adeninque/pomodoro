@@ -14,9 +14,9 @@ const useNotification = () => {
   }, [])
 
   const handleStage = (msg: string) => {
-    // const n = new Notification('Handle Stage', {
-    //   body: msg,
-    // })
+    const n = new Notification(msg, {
+      body: 'pomodoro'
+    })
   }
 
   return {

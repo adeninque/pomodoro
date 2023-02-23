@@ -8,7 +8,7 @@ const useInput = (initValue: string) => {
   useEffect(() => {
     if (Number(value) > 1439) {
       setValue('1439')
-    } else if (Number(value) < 1) {
+    } else if (Number(value) < 0) {
       setValue('1')
     }
   }, [value])
