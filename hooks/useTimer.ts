@@ -38,7 +38,7 @@ const useTimer = () => {
     if (!paused) {
       intervalRef.current = setInterval(() => {
         setCounter(prev => prev - 1)
-      }, 1000)
+      }, 10)
     }
   }, [paused])
 
@@ -56,7 +56,6 @@ const useTimer = () => {
     } else {
       setStatus('productive')
       setCounter(timer.productive)
-      handleStage('Have a nice work')
     }
     setFetchingCounter(false)
   }

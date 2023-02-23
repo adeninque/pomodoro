@@ -7,6 +7,9 @@ const useNotification = () => {
   const [perm, setPerm] = useState(true)
 
   useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+    }
     Notification.requestPermission()
       .then((res: NotificationPermission) => {
         if (res != 'granted') setPerm(false)
@@ -14,9 +17,13 @@ const useNotification = () => {
   }, [])
 
   const handleStage = (msg: string) => {
-    const n = new Notification(msg, {
-      body: 'pomodoro'
-    })
+    if(perm) {
+      navigator.serviceWorker.ready.then(reg => {
+        reg.showNotification(msg, {
+          body: 'pomodoro'
+        })
+      })
+    }
   }
 
   return {
