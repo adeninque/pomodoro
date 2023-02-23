@@ -38,7 +38,7 @@ const useTimer = () => {
     if (!paused) {
       intervalRef.current = setInterval(() => {
         setCounter(prev => prev - 1)
-      }, 10)
+      }, 1000)
     }
   }, [paused])
 
