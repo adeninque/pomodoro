@@ -9,11 +9,7 @@ import s from "./page.module.scss";
 import Link from "next/link";
 import Image from "next/image";
 
-interface PageProps {
-  toggler: () => void;
-}
-
-const Configuration = ({ toggler }: PageProps) => {
+const Configuration = () => {
   const productive = useInput("1");
   const rest = useInput("1");
   const timer = useTimeStorage();
